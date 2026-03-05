@@ -102,8 +102,6 @@ http://localhost/comment.php
 ```
 
 3. Enviar el formulario.
-4. Capturar pantalla mostrando la alerta de JavaScript emergente y el comentario reflejado.
-5. En el markdown final, bajo la captura, explicar con tus palabras que el script se ejecuta porque el comentario se muestra sin sanitizar.
 
 ![Captura 3-1](Captura03-01.png)
 
@@ -116,8 +114,6 @@ http://localhost/comment.php
 ```
 
 2. Enviar el formulario.
-3. Capturar pantalla mostrando la redirección (o la URL de destino).
-4. Explicar brevemente que un atacante podría redirigir a una página de phishing para robar credenciales.
 
 ![Captura 3-2](Captura03-02.png)
 
@@ -180,7 +176,6 @@ http://localhost/comment.php
 ```
 
 3. Enviar el formulario.
-4. Capturar pantalla del comentario con el payload (y la ejecución).
 
 ![Captura 4-3](Captura04-04.png)
 
@@ -190,11 +185,7 @@ http://localhost/comment.php
 cat ./www/cookieStealer/cookies.txt
 ```
 
-6. Capturar pantalla del fichero mostrando las cookies.
-
 ![Captura 4-4](Captura04-05.png)
-
-7. En el md, explicar con tus palabras que el script envía la cookie al servidor atacante mediante una petición a `cookieStealer/index.php`.
 
 ---
 
@@ -275,12 +266,6 @@ http://localhost/comment1.php
 
 ![Captura 5-2](Captura05-02.png)
 
-3. Comprobar que el script **no se ejecuta** y se muestra como texto escapado.
-4. Capturar pantalla y, debajo, explicar brevemente que:
-   - Se eliminan etiquetas HTML y caracteres nulos.
-   - Se sustituyen comillas por entidades HTML.
-   - Se usa `htmlspecialchars` al mostrar, evitando ejecución de scripts.
-
 ---
 ## 6. Mitigación con `htmlspecialchars` – `comment2.php`
 
@@ -352,9 +337,6 @@ http://localhost/comment2.php
 ```
 
 ![Captura 6-2](Captura06-02.png)
-
-3. Verificar que el código se muestra como texto y no se ejecuta.
-4. Capturar pantalla y explicar que `htmlspecialchars` convierte caracteres especiales (`<`, `>`, comillas, etc.) en entidades HTML, evitando la ejecución de scripts.
 
 ---
 
@@ -439,10 +421,6 @@ http://localhost/comment3.php
 2. Enviar un comentario vacío (solo espacios) y comprobar el mensaje de error.
 3. Enviar un comentario muy largo (> 500 caracteres) y comprobar el mensaje de error.
 4. Enviar un comentario normal y verificar que se muestra correctamente.
-5. Capturar pantallas de los tres casos y explicar que ahora:
-   - Se evita texto vacío.
-   - Se limitan los comentarios demasiado largos.
-   - Se sigue escapando la salida para prevenir XSS.
 
 ![Captura 7-2](Captura07-02.png)
 
@@ -573,13 +551,6 @@ http://localhost/comment4.php
 3. Probar a enviar un comentario vacío o muy largo para comprobar los errores.
 
 ![Captura 8-3](Captura08-03.png)
-
-4. (Opcional) Manipular el campo `csrf_token` con las DevTools para ver el mensaje de error de token inválido.
-5. Capturar pantallas de los diferentes casos y explicar brevemente que ahora:
-   - Se filtran caracteres peligrosos.
-   - Se escapan caracteres especiales con `htmlspecialchars`.
-   - Se valida longitud y contenido.
-   - Se protege frente a CSRF con un token de sesión.
 
 ---
 
