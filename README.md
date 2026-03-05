@@ -26,6 +26,8 @@ docker-compose up -d
 docker ps
 ```
 
+![Captura 1](Captura01.png)
+
 ---
 
 ## 2. Creación del código vulnerable `comment.php`
@@ -77,6 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 ```
 
+![Captura 2](Captura02.png)
+
 3. Guardar y cerrar el archivo.
 
 ---
@@ -101,6 +105,8 @@ http://localhost/comment.php
 4. Capturar pantalla mostrando la alerta de JavaScript emergente y el comentario reflejado.
 5. En el markdown final, bajo la captura, explicar con tus palabras que el script se ejecuta porque el comentario se muestra sin sanitizar.
 
+![Captura 3-1](Captura03-01.png)
+
 ### 3.2 Explotación 2 – Redirección a phishing
 
 1. De nuevo en el formulario, introducir:
@@ -112,6 +118,8 @@ http://localhost/comment.php
 2. Enviar el formulario.
 3. Capturar pantalla mostrando la redirección (o la URL de destino).
 4. Explicar brevemente que un atacante podría redirigir a una página de phishing para robar credenciales.
+
+![Captura 3-2](Captura03-02.png)
 
 ---
 ## 4. Ataque para robar cookies – Servidor atacante
@@ -126,6 +134,8 @@ touch ./www/cookieStealer/index.php
 touch ./www/cookieStealer/cookies.txt
 chmod 777 ./www/cookieStealer/cookies.txt
 ```
+
+![Captura 4-1](Captura04-01.png)
 
 ### 4.2 Código de `index.php` del atacante
 
@@ -153,6 +163,8 @@ if (isset($_GET['cookie'])) {
 
 4. Guardar y cerrar.
 
+![Captura 4-2](Captura04-02.png)
+
 ### 4.3 Lanzar el ataque desde `comment.php`
 
 1. Acceder de nuevo a:
@@ -169,13 +181,19 @@ http://localhost/comment.php
 
 3. Enviar el formulario.
 4. Capturar pantalla del comentario con el payload (y la ejecución).
-5. En terminal, comprobar el contenido del fichero de cookies:
+
+![Captura 4-3](Captura04-04.png)
+
+6. En terminal, comprobar el contenido del fichero de cookies:
 
 ```bash
 cat ./www/cookieStealer/cookies.txt
 ```
 
 6. Capturar pantalla del fichero mostrando las cookies.
+
+![Captura 4-4](Captura04-05.png)
+
 7. En el md, explicar con tus palabras que el script envía la cookie al servidor atacante mediante una petición a `cookieStealer/index.php`.
 
 ---
@@ -237,6 +255,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 ```
 
+![Captura 5-1](Captura05-01.png)
+
 3. Guardar y cerrar.
 
 ### 5.2 Probar la mitigación
@@ -252,6 +272,8 @@ http://localhost/comment1.php
 ```html
 <script>alert('XSS ejecutado!')</script>
 ```
+
+![Captura 5-2](Captura05-02.png)
 
 3. Comprobar que el script **no se ejecuta** y se muestra como texto escapado.
 4. Capturar pantalla y, debajo, explicar brevemente que:
@@ -311,6 +333,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 ```
 
+![Captura 6-1](Captura06-01.png)
+
 3. Guardar y cerrar.
 
 ### 6.2 Probar `comment2.php`
@@ -326,6 +350,8 @@ http://localhost/comment2.php
 ```html
 <script>alert('XSS ejecutado!')</script>
 ```
+
+![Captura 6-2](Captura06-02.png)
 
 3. Verificar que el código se muestra como texto y no se ejecuta.
 4. Capturar pantalla y explicar que `htmlspecialchars` convierte caracteres especiales (`<`, `>`, comillas, etc.) en entidades HTML, evitando la ejecución de scripts.
@@ -398,6 +424,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 ```
 
+![Captura 7-1](Captura07-01.png)
+
 3. Guardar y cerrar.
 
 ### 7.2 Probar `comment3.php`
@@ -415,6 +443,8 @@ http://localhost/comment3.php
    - Se evita texto vacío.
    - Se limitan los comentarios demasiado largos.
    - Se sigue escapando la salida para prevenir XSS.
+
+![Captura 7-2](Captura07-02.png)
 
 ---
 ## 8. Código seguro con todas las mitigaciones – `comment4.php`
@@ -522,6 +552,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </html>
 ```
 
+![Captura 8-1](Captura08-01.png)
+
 3. Guardar y cerrar.
 
 ### 8.2 Probar `comment4.php`
@@ -535,7 +567,13 @@ http://localhost/comment4.php
 2. Enviar un comentario normal y comprobar que:
    - Se muestra el mensaje de éxito.
    - El comentario aparece escapado.
+
+![Captura 8-2](Captura08-02.png)
+
 3. Probar a enviar un comentario vacío o muy largo para comprobar los errores.
+
+![Captura 8-3](Captura08-03.png)
+
 4. (Opcional) Manipular el campo `csrf_token` con las DevTools para ver el mensaje de error de token inválido.
 5. Capturar pantallas de los diferentes casos y explicar brevemente que ahora:
    - Se filtran caracteres peligrosos.
@@ -567,17 +605,4 @@ sudo ./restaurarConfiguracionOriginal.sh
 docker compose stop
 ```
 
----
-
-## 10. Documento de entrega (este propio `.md`)
-
-En este mismo archivo Markdown:
-
-- Inserta las capturas de pantalla de:
-  - Explotación en `comment.php` (alert y redirección).
-  - Robo de cookies y contenido de `cookies.txt`.
-  - Pruebas de `comment1.php`, `comment2.php`, `comment3.php` y `comment4.php`.
-- Entre las capturas, añade explicaciones breves **con tus palabras** sobre:
-  - Por qué el código inicial es vulnerable.
-  - Qué mejora introduce cada versión (`comment1.php`, `comment2.php`, `comment3.php`, `comment4.php`).
-  - Cómo las mitigaciones evitan XSS y mejoran la seguridad.
+![Captura 9](Captura09.png)
